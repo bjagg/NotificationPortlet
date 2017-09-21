@@ -1,0 +1,31 @@
+= Contribution Guidelines
+Apereo requires contributors sign a contributor license agreement (CLA).
+We realize this is a hurdle. To learn why we require CLAs, see
+"Q5. Why does Apereo require Contributor License Agreements (CLAs)?"
+at <https://www.apereo.org/licensing>.
+
+The CLA form(s) can be found <https://www.apereo.org/licensing/agreements> along
+with the various ways to submit the form.
+
+Contributions will be accepted once the contributor's name appears at
+<http://licensing.apereo.org/completed-clas>.
+
+See <https://www.apereo.org/licensing> for details.
+
+== License
+
+Copyright 2017 Apereo Foundation, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this project except in compliance with the License.
+You may obtain a copy of the License at
+
+<http://www.apache.org/licenses/LICENSE-2.0>
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+See <https://www.apereo.org/licensing> for additional details.
