@@ -3,8 +3,6 @@ package org.jasig.portlet.notice.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Component;
 public class HidePerSessionSupportFilter extends AbstractNotificationServiceFilter {
 
     public static final String SESSION_ATTR_PREFIX = HidePerSessionSupportFilter.class.getName() + ".timestamp";
+    private static final long TIMEOUT_MILLIS = 7000L;
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -27,17 +26,11 @@ public class HidePerSessionSupportFilter extends AbstractNotificationServiceFilt
         super(AbstractNotificationServiceFilter.ORDER_NORMAL);
     }
 
-    private boolean readEnabled(PortletRequest request) {
-        PortletPreferences prefs = request.getPreferences();
-        return Boolean.valueOf(prefs.getValue(READ_ENABLED_PREFERENCE, DEFAULT_READ_BEHAVIOR));
-    }
-
     @Override
     public NotificationResponse doFilter(HttpServletRequest request, INotificationServiceFilterChain chain) {
 
         final HttpSession session = request.getSession(true);
         final NotificationResponse response = chain.doFilter().cloneIfNotCloned();
-        request.getParameter()
 
         for (NotificationCategory category : response.getCategories()) {
             final List<NotificationEntry> newEntries = new ArrayList<>();
@@ -61,7 +54,12 @@ public class HidePerSessionSupportFilter extends AbstractNotificationServiceFilt
         return SESSION_ATTR_PREFIX + entry.getId();
     }
     private static boolean hasEntryBeenSeen(HttpSession session, NotificationEntry entry) {
-        return session.getAttribute(getEntryAttrName(entry)) != null;
+        if (session.getAttribute(getEntryAttrName(entry)) != null) {
+            final Long ts = (Long) session.getAttribute(getEntryAttrName(entry));
+            return ts + TIMEOUT_MILLIS < System.currentTimeMillis();
+        } else {
+            return false;
+        }
     }
 
     private static void markSessionForEntry(HttpSession session, NotificationEntry entry) {
