@@ -106,9 +106,7 @@ export default {
   },
   computed: {
     unreadCount() {
-      return this.notifications.filter(
-        ({ attributes }) => !JSON.parse(attributes?.READ?.[0] || "true")
-      ).length;
+      return this.notifications.length;
     },
     variant() {
       return this.unreadCount < 1 ? "default" : "danger";
