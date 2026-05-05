@@ -68,6 +68,16 @@ dependencies {
     compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
     compile "org.jasig.resourceserver:resource-server-utils:${resourceServerVersion}"
     compile("org.jasig.portal:uPortal-soffit-renderer:${uPortalVersion}")
+    /*
+     * uPortal-soffit-core declares jjwt-impl and jjwt-jackson as
+     * runtimeOnly — Gradle does not propagate runtimeOnly transitives
+     * through `compile`, so without these explicit declarations the
+     * deployed WAR ships only jjwt-api and `Jwts.parser()` throws
+     * UnknownClassException on first call, breaking the OIDC-protected
+     * /api/v2/notifications endpoint with a 403.
+     */
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
     compile "org.jasig.portal:uPortal-spring:${uPortalVersion}@jar" // Use @jar classifier to exclude transitive dependencies
     compile "org.jasypt:jasypt-spring31:${jasyptVersion}"
     compile "org.springframework:spring-jdbc:${springVersion}"
